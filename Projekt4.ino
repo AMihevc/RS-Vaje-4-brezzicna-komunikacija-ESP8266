@@ -10,8 +10,15 @@
 #define USERNAME "admin"
 #define PASSWORD "admin"
 #define PIN_LED 2
-#define MODE 1 // 0 == AP, 1 == STA, 2 == AP & STA (combo)
+#define MODE 0 // 0 == AP, 1 == STA, 2 == AP & STA (combo)
 
+//AP MODE SETTINGS
+#define AP_SSID "dostopna_tocka_ESP"
+#define AP_PASS "geslo123ESP"
+
+//STA MODE SETTINGS
+#define STA_SSID "Anze iPhone"
+#define STA_PASS "eduroamjeshit"
 
 // inicializirajte server na portu 80:
 // Koda: ....
@@ -138,9 +145,20 @@ void setupWiFiAP(){
    * Omogočite tudi, da se uporabnik lahko vrne na glavno stran.
    */
   // Koda: ....
+
+  //set wifi mode AP
   WiFi.mode(WIFI_AP);
 
-  
+  //set AP SSID and password
+  WiFi.softAP(AP_SSID, AP_PASS);
+  delay(500);
+  // print info
+  Serial.print("Access Point: SSID = ");
+  Serial.print(AP_SSID);
+  Serial.print(", Password = ");
+  Serial.println(AP_PASS);
+
+    
 }
 
 void setupWiFiSTA(){
@@ -150,17 +168,19 @@ void setupWiFiSTA(){
    */
   // Koda: ....
 
+  //set wifi mode STA
   WiFi.mode(WIFI_STA);
-  // set ssid and password
-  String ssid = "Anze iPhone";
-  String password = "eduroamjeshit";
 
-  WiFi.begin(ssid, password);
+  // Connect to WiFi network with SSID and password
+  WiFi.begin(STA_SSID, STA_PASS);
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("Connected to WiFi network with ssid: " + ssid);
+  Serial.println("");
+  Serial.print("Connected to WiFi network with ssid: ");
+  Serial.println(STA_SSID);
 }
 
 
