@@ -2,11 +2,15 @@
 #include <ESP8266WebServer.h>
 #include<Wire.h>
 #include<Ticker.h>
+#include <Arduino.h> // include this header file
+
 
 
 // zamenjajte uporabnika in geslo:
 #define USERNAME "admin"
 #define PASSWORD "admin"
+#define PIN_LED 2
+#define MODE 1 // 0 == AP, 1 == STA, 2 == AP & STA (combo)
 
 
 // inicializirajte server na portu 80:
@@ -14,6 +18,8 @@
 ESP8266WebServer server(80);
 
 // globalne spremenljivke
+int led_stanje = 0; // stanje LED lučke 
+
 
 
 /* ----------------------------------------------------------------
@@ -126,28 +132,58 @@ void handleNotFound(){
   server.send(404, "text/html", vsebina);
 }
 
+void setupWiFiAP(){
+  /*
+   * Dodajte ustrezno kodo za inicializacijo WiFi modula v načinu AP.
+   * Omogočite tudi, da se uporabnik lahko vrne na glavno stran.
+   */
+  // Koda: ....
+  WiFi.mode(WIFI_AP);
+
+  
+}
+
+void setupWiFiSTA(){
+  /*
+   * Dodajte ustrezno kodo za inicializacijo WiFi modula v načinu STA.
+   * Omogočite tudi, da se uporabnik lahko vrne na glavno stran.
+   */
+  // Koda: ....
+
+  WiFi.mode(WIFI_STA);
+  // set ssid and password
+  String ssid = "Anze iPhone";
+  String password = "eduroamjeshit";
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Connected to WiFi network with ssid: " + ssid);
+}
+
+
+
 /* ----------------------------------------------------------------
  * setup:
  */
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  Serial.println("");
-  Wire.begin(12,14);
-  // SDA - 12 pin
-  // SCL - 14 pin
-  Wire.setClock(100000);
   /*
-   * Dodajte ustrezno kodo za inicializacijo.
-   */
+  * Dodajte ustrezno kodo za inicializacijo.
+  */
   
   Serial.begin(115200);
+  Serial.println("");
+  
   pinMode(PIN_LED, OUTPUT);
-#if MODE == 0
-  setupWiFiAP();
-#else if MODE == 1
-  setupWiFiSTA();
-#endif
+
+  #if MODE == 0
+    setupWiFiAP();
+  #else if MODE == 1
+    setupWiFiSTA();
+  #endif
 
   //**** nastavitve strežnika:
   server.on("/", handleRoot);
