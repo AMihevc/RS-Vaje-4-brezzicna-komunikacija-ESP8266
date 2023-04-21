@@ -140,33 +140,27 @@ void handleNotFound(){
 }
 
 void setupWiFiAP(){
-  /*
-   * Dodajte ustrezno kodo za inicializacijo WiFi modula v načinu AP.
-   * Omogočite tudi, da se uporabnik lahko vrne na glavno stran.
-   */
-  // Koda: ....
-
+  
   //set wifi mode AP
   WiFi.mode(WIFI_AP);
 
   //set AP SSID and password
   WiFi.softAP(AP_SSID, AP_PASS);
   delay(500);
+  
   // print info
   Serial.print("Access Point: SSID = ");
   Serial.print(AP_SSID);
   Serial.print(", Password = ");
   Serial.println(AP_PASS);
 
+  // print IP address
+  Serial.print("IP address = ");
+  Serial.println(WiFi.softAPIP());
     
 }
 
 void setupWiFiSTA(){
-  /*
-   * Dodajte ustrezno kodo za inicializacijo WiFi modula v načinu STA.
-   * Omogočite tudi, da se uporabnik lahko vrne na glavno stran.
-   */
-  // Koda: ....
 
   //set wifi mode STA
   WiFi.mode(WIFI_STA);
